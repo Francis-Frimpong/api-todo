@@ -25,6 +25,13 @@ class Todo
         return ['message' => 'Todo created'];  
     }
 
+    public function getTodoByID($id)
+    {
+        $stmt = $this->db->prepare('SELECT * FROM todos WHERE id = ?');
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function update($id,$data)
     {
         $stmt = $this->db->prepare('UPDATE todos SET title=?,description=? WHERE id =?');

@@ -17,6 +17,18 @@ class TodoController
         Response::json($data, 200);
     }
 
+    public function indexById($id){
+        $data = $this->todo->getTodoByID($id);
+        
+        if(!$data){
+             Response::json(['error' => 'Todo not found'], 404);
+            return;
+        }
+
+        Response::json($data, 200);
+
+    }
+
     public function store(){
         // Get JSON input
         $data = json_decode(file_get_contents('php://input'), true);

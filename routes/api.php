@@ -4,12 +4,17 @@ require_once __DIR__ . '/../app/Controllers/TodoController.php';
 
 $router = new Router();
 
-// Read all todos
 // Route: http://localhost/api-todo/todos
+
+// Read all todos
 $router->get('/todos', [TodoController::class, 'index']);
+
 
 // Create a new todo
 $router->post('/todos', [TodoController::class, 'store']);
+
+// view or display todo by Id
+$router->get('/todos/{id}', [TodoController::class, 'indexById']);
 
 // Update a todo by ID
 $router->put('/todos/{id}', [TodoController::class, 'update']);
