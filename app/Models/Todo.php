@@ -16,12 +16,13 @@ class Todo
 
     public function create($data)
     {
-        $stmt = $this->db->prepare('INSERT INTO todos (title, description) VALUES(?,?)');
-        $stmt->execute([
-            $data['title'],
-            $data['description'],
-        ]);
-        return ['message' => 'Todo created'];   
+        $title = trim($data['title']);
+        $description = trim($data['description']);
+
+        $stmt = $this->db->prepare('INSERT INTO todos (title, description) VALUES (?, ?)');
+        $stmt->execute([$title, $description]);
+
+        return ['message' => 'Todo created'];  
     }
 
     public function update($id,$data)
@@ -30,7 +31,7 @@ class Todo
         $stmt->execute([
             $data['title'],
             $data['description'],
-            $data['id']
+            $id
         ]);
         return ['message' => 'Todo updated'];
 

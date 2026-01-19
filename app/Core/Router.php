@@ -23,36 +23,44 @@ class Router
         $this->routes['DELETE'][$uri] = $action;
     }
 
-    public function dispatch()
+  public function dispatch()
     {
         $method = $_SERVER['REQUEST_METHOD'];
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-
-        // If your project folder is /api-todo
+        // Base path fix
         $basePath = '/api-todo';
         if (strpos($uri, $basePath) === 0) {
             $uri = substr($uri, strlen($basePath));
         }
 
-        // Remove trailing slash
         $uri = rtrim($uri, '/');
-
-        // If URI is empty, set to /
         if ($uri === '') {
             $uri = '/';
         }
 
-        if(!isset($this->routes[$method][$uri])){
-            http_response_code(404);
-            echo json_encode(['error' => 'Route not found']);
+        if (!isset($this->routes[$method])) {
+            Response::json(['error' => 'Route not found'], 404);
             return;
         }
 
+        foreach ($this->routes[$method] as $route => $action) {
 
+            // Convert /todos/{id} to regex
+            $pattern = preg_replace('#\{id\}#', '([0-9]+)', $route);
+            $pattern = '#^' . rtrim($pattern, '/') . '$#';
 
-        [$class, $methodName] = $this->routes[$method][$uri];
-        $controller = new $class();
-        $controller->$methodName();
+            if (preg_match($pattern, $uri, $matches)) {
+
+                array_shift($matches); // remove full match
+                [$class, $methodName] = $action;
+
+                $controller = new $class();
+                $controller->$methodName(...$matches);
+                return;
+            }
+        }
+
+        Response::json(['error' => 'Route not found'], 404);
     }
 }

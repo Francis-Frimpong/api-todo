@@ -18,9 +18,25 @@ class TodoController
     }
 
     public function store(){
-        $input = json_decode(file_get_contents('php://input'), true);
-        $result = $this->todo->create($input);
-        Response::json($result, 200);
+        // Get JSON input
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        // Check if JSON is valid
+        if (!$data) {
+            Response::json(['error' => 'Invalid JSON or empty body'], 400);
+            return;
+        }
+
+        // Check required fields
+        if (!isset($data['title']) || !isset($data['description'])) {
+            Response::json(['error' => 'Title and description are required'], 400);
+            return;
+        }
+
+        // Pass safe data to model
+        $result = $this->todo->create($data);
+
+        Response::json($result, 201);
     }
 
     public function update($id)
