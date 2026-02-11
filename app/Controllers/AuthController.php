@@ -57,4 +57,46 @@ class AuthController {
         }
     }
 
+    public function login()
+    {
+        // Get JSON input
+        $data = json_decode(file_get_contents('php://input'), true);
+        
+        if(!$data){
+            Response::json(['error' => 'Invalid JSON or empty body'], 400);
+            return;
+        }
+
+        // Validate required fields
+        if(empty(trim($data['email'])) || empty(trim($data['password']))){
+            Response::json(['error' => 'Email and password are required'], 400);
+            return;
+        }
+
+        // Find user by email
+        $user = $this->userModel->findUserByEmail($data['email']);
+
+        if(!$user){
+            Response::json(['error' => 'Invalid credentials'], 401);
+        }
+
+        // Verify password
+        if(!password_verify($data['password'], $user['password'])){
+            Response::json(['error' => 'invalid credentials'], 401);
+            return;
+        }
+
+        // Login successful (JWT will be added here later)
+
+        Response::json([
+            'status' => 'success',
+            'message' => 'Login successful',
+            'user' => [
+                'id' => $user['id'],
+                'name' => $user['name'],
+                'email' => $user['email']
+            ]
+        ]);
+    }
+
 }
