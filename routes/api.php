@@ -9,12 +9,9 @@ $router = new Router();
 // Auth endpoint
 // register new user
 $router->post('/register', [AuthController::class, 'register']);
+
+// Login registered user
 $router->post('/login', [AuthController::class, 'login']);
-
-
-
-
-
 
 
 // Todo endpoints
