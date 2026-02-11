@@ -1,8 +1,22 @@
 <?php
 require_once __DIR__ . '/../app/Core/Router.php';
 require_once __DIR__ . '/../app/Controllers/TodoController.php';
+require_once __DIR__ . '/../app/Controllers/AuthController.php';
 
 $router = new Router();
+
+
+// Auth endpoint
+// register new user
+$router->post('/register', [AuthController::class, 'register']);
+
+
+
+
+
+
+
+// Todo endpoints
 
 // Route: http://localhost/api-todo/todos
 
