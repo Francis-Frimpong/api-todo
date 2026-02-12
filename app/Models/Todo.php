@@ -9,6 +9,7 @@ class Todo
         $this->db = Database::getConnection();
     }
 
+    // Get all todo by a login user
     public function getTodoByUserID($userId)
     {
         $stmt = $this->db->prepare('SELECT * FROM todos WHERE user_id = ?');
@@ -16,6 +17,7 @@ class Todo
         return $stmt->fetchAll(PDO::FETCH_ASSOC); // <-- fetchAll returns array
     }
 
+    // create todo for a login user
     public function createTodo($data, $userId)
     {
         $title = trim($data['title']);
@@ -27,6 +29,7 @@ class Todo
         return ['message' => 'Todo created'];  
     }
 
+    // get a single to for or by a login user
     public function getASingleTodo($id, $userId)
     {
         $stmt = $this->db->prepare('SELECT * FROM todos WHERE id = ? AND user_id = ?');
@@ -34,13 +37,14 @@ class Todo
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function update($id,$data)
+    public function update($id,$data,$userId)
     {
-        $stmt = $this->db->prepare('UPDATE todos SET title=?,description=? WHERE id =?');
+        $stmt = $this->db->prepare('UPDATE todos SET title=?,description=? WHERE id =? AND user_id = ?');
         $stmt->execute([
             $data['title'],
             $data['description'],
-            $id
+            $id,
+            $userId
         ]);
         return ['message' => 'Todo updated'];
 

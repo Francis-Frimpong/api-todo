@@ -65,8 +65,10 @@ class TodoController
 
     public function update($id)
     {
+        $user = $GLOBALS['auth_user'] = AuthMiddleware::handle();
+
         $input = json_decode(file_get_contents('php://input'), true);
-        $result = $this->todo->update($id,$input);
+        $result = $this->todo->update($id,$input,$user->id);
         Response::json($result, 200);
     }
 
