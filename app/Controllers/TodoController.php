@@ -24,8 +24,10 @@ class TodoController
         Response::json($data, 200);
     }
 
-    public function indexById($id){
-        $data = $this->todo->getTodoByID($id);
+    public function getSingleTodo($id){
+        $user = $GLOBALS['auth_user'] = AuthMiddleware::handle();
+
+        $data = $this->todo->getASingleTodo($id, $user->id);
         
         if(!$data){
              Response::json(['error' => 'Todo not found'], 404);

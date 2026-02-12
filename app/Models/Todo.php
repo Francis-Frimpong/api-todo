@@ -27,10 +27,10 @@ class Todo
         return ['message' => 'Todo created'];  
     }
 
-    public function getTodoByID($id)
+    public function getASingleTodo($id, $userId)
     {
-        $stmt = $this->db->prepare('SELECT * FROM todos WHERE id = ?');
-        $stmt->execute([$id]);
+        $stmt = $this->db->prepare('SELECT * FROM todos WHERE id = ? AND user_id = ?');
+        $stmt->execute([$id, $userId]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 

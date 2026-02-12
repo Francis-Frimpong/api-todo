@@ -26,7 +26,7 @@ $router->get('/todos', [TodoController::class, 'userTodo'], ['auth']);
 $router->post('/todos', [TodoController::class, 'store'], ['auth']);
 
 // view or display todo by Id
-$router->get('/todos/{id}', [TodoController::class, 'indexById'], ['auth']);
+$router->get('/todos/{id}', [TodoController::class, 'getSingleTodo'], ['auth']);
 
 // Update a todo by ID
 $router->put('/todos/{id}', [TodoController::class, 'update'], ['auth']);
