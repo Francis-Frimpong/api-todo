@@ -18,17 +18,17 @@ $router->post('/login', [AuthController::class, 'login']);
 
 // Route: http://localhost/api-todo/todos
 
-// Read all todos
+// Read all todos by an authorized user
 $router->get('/todos', [TodoController::class, 'userTodo'], ['auth']);
 
 
-// Create a new todo
+// Create a new todo for an authorized user
 $router->post('/todos', [TodoController::class, 'store'], ['auth']);
 
-// view or display todo by Id
+// view or display todo by an uthorize user
 $router->get('/todos/{id}', [TodoController::class, 'getSingleTodo'], ['auth']);
 
-// Update a todo by ID
+// Update a todo by an authorized user
 $router->put('/todos/{id}', [TodoController::class, 'update'], ['auth']);
 
 // Delete a todo by ID
