@@ -11,9 +11,16 @@ class TodoController
         $this->todo = new Todo();
     }
 
-    public function index()
+    public function userTodo()
     {
-        $data = $this->todo->all();
+        // Get the logged-in user via middleware
+        // $user = AuthMiddleware::handle();
+        $user = $GLOBALS['auth_user'] = AuthMiddleware::handle();
+
+
+        // Fetch todos for this user
+        $data = $this->todo->getTodoByUserID($user->id);
+
         Response::json($data, 200);
     }
 
@@ -30,6 +37,9 @@ class TodoController
     }
 
     public function store(){
+
+        $user = $GLOBALS['auth_user'] = AuthMiddleware::handle();
+
         // Get JSON input
         $data = json_decode(file_get_contents('php://input'), true);
 
@@ -46,7 +56,7 @@ class TodoController
         }
 
         // Pass safe data to model
-        $result = $this->todo->create($data);
+        $result = $this->todo->createTodo($data, $user->id);
 
         Response::json($result, 201);
     }

@@ -19,19 +19,19 @@ $router->post('/login', [AuthController::class, 'login']);
 // Route: http://localhost/api-todo/todos
 
 // Read all todos
-$router->get('/todos', [TodoController::class, 'index']);
+$router->get('/todos', [TodoController::class, 'userTodo'], ['auth']);
 
 
 // Create a new todo
-$router->post('/todos', [TodoController::class, 'store']);
+$router->post('/todos', [TodoController::class, 'store'], ['auth']);
 
 // view or display todo by Id
-$router->get('/todos/{id}', [TodoController::class, 'indexById']);
+$router->get('/todos/{id}', [TodoController::class, 'indexById'], ['auth']);
 
 // Update a todo by ID
-$router->put('/todos/{id}', [TodoController::class, 'update']);
+$router->put('/todos/{id}', [TodoController::class, 'update'], ['auth']);
 
 // Delete a todo by ID
-$router->delete('/todos/{id}', [TodoController::class, 'destroy']);
+$router->delete('/todos/{id}', [TodoController::class, 'destroy'], ['auth']);
 
 $router->dispatch();

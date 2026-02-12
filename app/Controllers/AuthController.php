@@ -1,6 +1,8 @@
 <?php
 
 require_once __DIR__ . '/../models/User.php';
+require_once __DIR__ . '/../Core/JWTHandler.php';
+
 
 class AuthController {
 
@@ -87,15 +89,13 @@ class AuthController {
         }
 
         // Login successful (JWT will be added here later)
+        $jwt = new JWTHandler();
+        $token = $jwt->generateToken($user);
 
         Response::json([
             'status' => 'success',
             'message' => 'Login successful',
-            'user' => [
-                'id' => $user['id'],
-                'name' => $user['name'],
-                'email' => $user['email']
-            ]
+            'token' => $token
         ]);
     }
 

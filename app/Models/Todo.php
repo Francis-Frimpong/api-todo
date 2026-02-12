@@ -9,18 +9,20 @@ class Todo
         $this->db = Database::getConnection();
     }
 
-    public function all()
+    public function getTodoByUserID($userId)
     {
-        return $this->db->query('SELECT * FROM todos')->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = $this->db->prepare('SELECT * FROM todos WHERE user_id = ?');
+        $stmt->execute([$userId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC); // <-- fetchAll returns array
     }
 
-    public function create($data)
+    public function createTodo($data, $userId)
     {
         $title = trim($data['title']);
         $description = trim($data['description']);
 
-        $stmt = $this->db->prepare('INSERT INTO todos (title, description) VALUES (?, ?)');
-        $stmt->execute([$title, $description]);
+        $stmt = $this->db->prepare('INSERT INTO todos (title, description, user_id) VALUES (?, ?, ?)' );
+        $stmt->execute([$title, $description, $userId]);
 
         return ['message' => 'Todo created'];  
     }
