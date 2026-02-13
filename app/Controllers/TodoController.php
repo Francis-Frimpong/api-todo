@@ -74,7 +74,9 @@ class TodoController
 
     public function destroy($id)
     {
-        $result = $this->todo->delete($id);
+        $user = $GLOBALS['auth_user'] = AuthMiddleware::handle();
+
+        $result = $this->todo->delete($id, $user->id);
         Response::json($result, 200);
     }
 }

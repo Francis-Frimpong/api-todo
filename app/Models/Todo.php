@@ -50,10 +50,10 @@ class Todo
 
     }
 
-    public function delete($id)
+    public function delete($id,$userId)
     {
-        $stmt = $this->db->prepare('DELETE FROM todos WHERE id=?');
-        $stmt->execute([$id]);
+        $stmt = $this->db->prepare('DELETE FROM todos WHERE id=? AND user_id = ?');
+        $stmt->execute([$id, $userId]);
         return ['message' => 'Todo deleted'];
     }
 
